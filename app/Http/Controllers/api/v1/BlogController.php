@@ -49,10 +49,6 @@ class BlogController extends Controller
 
             $blogs = $query->paginate($perPage);
 
-            $blogs->getCollection()->transform(function ($blog) {
-                return $blog->toArray();
-            });
-
             return response()->json([
                 'success' => true,
                 'message' => 'Blogs fetched successfully',

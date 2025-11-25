@@ -61,7 +61,7 @@ class Blog extends Model implements HasMedia
         if (! $userId) {
             return false;
         }
-
+        
         return $this->likes()->where('user_id', $userId)->exists();
     }
 
@@ -87,15 +87,8 @@ class Blog extends Model implements HasMedia
     public function getLikedByAuthUserAttribute(): bool
     {
         $userId = auth()->id();
-        if (! $userId) {
-            return false;
-        }
 
-        if ($this->relationLoaded('likes')) {
-            return $this->likes->contains('user_id', $userId);
-        }
-
-        return $this->likes()->where('user_id', $userId)->exists();
+        return $this->isLikedBy($userId);
     }
 
     /**
