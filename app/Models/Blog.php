@@ -55,14 +55,19 @@ class Blog extends Model implements HasMedia
     /**
      * Check if the given user (model or id) has liked this blog.
      */
-    public function isLikedBy($user): bool
+    public function isLikedByUser($user): bool
     {
         $userId = is_int($user) ? $user : ($user->id ?? null);
         if (! $userId) {
             return false;
         }
-        
-        return $this->likes()->where('user_id', $userId)->exists();
+
+        $isLiked = $this->likes()->where('user_id', $userId)->count();
+        // Or
+        // $isLiked = $this->likes()->where('user_id', $userId)->first();
+        // return $isLiked !== null;
+
+        return $isLiked > 0 ? true : false;
     }
 
     /**
@@ -88,7 +93,7 @@ class Blog extends Model implements HasMedia
     {
         $userId = auth()->id();
 
-        return $this->isLikedBy($userId);
+        return $this->isLikedByUser($userId);
     }
 
     /**

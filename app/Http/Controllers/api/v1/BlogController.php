@@ -185,7 +185,7 @@ class BlogController extends Controller
                 ], Response::HTTP_UNAUTHORIZED);
             }
 
-            if ($blog->isLikedBy($user->id)) {
+            if ($blog->isLikedByUser($user->id)) {
                 $blog->likes()->where('user_id', $user->id)->delete();
                 $liked = false;
                 $message = 'Blog unliked successfully';
