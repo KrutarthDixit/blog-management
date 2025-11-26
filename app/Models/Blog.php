@@ -93,7 +93,11 @@ class Blog extends Model implements HasMedia
     {
         $userId = auth()->id();
 
-        return $this->isLikedByUser($userId);
+        return $this->withExists([
+            'likes as liked_by_auth_user' => function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            }
+        ])->first() === null ? false : true;
     }
 
     /**
